@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import Score from "./components/Score";
+import TouchTyper from "./components/TouchTyper";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <main className="app-container">
+            {/* corner-github */}
+            <div className="corner-left">
+                <div className="github-profile-triangle"></div>
+                <a
+                    className="github-profile-button"
+                    href="https://github.com/BryanFonseca"
+                >
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+            </div>
+            {/* corner-info */}
+            <div className="corner-right">
+                <button className="info-button">
+                    <ion-icon name="information-outline"></ion-icon>
+                </button>
+            </div>
+
+            <TouchTyper />
+            <Score scored={3} />
+        </main>
+    );
 }
 
 export default App;
