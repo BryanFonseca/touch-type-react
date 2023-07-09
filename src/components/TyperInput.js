@@ -13,7 +13,6 @@ function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
     function handleType(e) {
         const charCount = e.target.value.length;
         const toCompare = currentWord.slice(0, charCount);
-        console.log("To Compare:", toCompare);
         const equality = equalUntil(toCompare, e.target.value);
         const summary = {
             correctUntil: equality === -1 ? toCompare.length : equality,

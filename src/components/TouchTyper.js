@@ -36,6 +36,7 @@ function TouchTyper() {
                             : ""
                     } ${
                         wordIdx === 0 &&
+                        characterIdx > typingDetails.correctUntil &&
                         characterIdx <= typingDetails.wrongUntil
                             ? "char--wrong"
                             : ""
