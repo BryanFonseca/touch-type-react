@@ -25,17 +25,22 @@ function TouchTyper() {
         setCurrentWordIndex((prev) => prev + 1);
     }
 
-    const wordsElements = words.slice(currentWordIndex).map((word, wordIdx) => (
-        <span className="word" key={word + wordIdx}>
+    const wordsElements = words.map((word, wordIdx) => (
+        <span
+            className={`word ${
+                wordIdx === currentWordIndex ? "word--current" : ""
+            }`}
+            key={word + wordIdx}
+        >
             {[...word].map((character, characterIdx) => (
                 <span
                     className={`char ${
-                        wordIdx === 0 &&
+                        wordIdx === currentWordIndex &&
                         characterIdx <= typingDetails.correctUntil
                             ? "char--correct"
                             : ""
                     } ${
-                        wordIdx === 0 &&
+                        wordIdx === currentWordIndex &&
                         characterIdx > typingDetails.correctUntil &&
                         characterIdx <= typingDetails.wrongUntil
                             ? "char--wrong"

@@ -7,37 +7,44 @@ function equalUntil(baseWord, otherWord) {
     return -1;
 }
 
+/**
+ * 
+ * @param {*} typingWord 
+ * @param {*} inputValue 
+ */
+function getSummary(typingWord, inputValue) {
+    const equality = equalUntil(typingWord, inputValue);
+    const summary = {
+        correctUntil: equality === -1 ? typingWord.length : equality,
+        wrongUntil: equality !== -1 ? typingWord.length : 0,
+    };
+    summary.correctUntil--;
+    summary.wrongUntil--;
+
+    if (inputValue.length > typingWord.length)
+        summary.wrongUntil = inputValue.length - 1;
+
+    return summary;
+}
+
 function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
     const [typed, setTyped] = useState("");
 
     function handleType(e) {
-        const charCount = e.target.value.length;
-        const toCompare = currentWord.slice(0, charCount);
-        const equality = equalUntil(toCompare, e.target.value);
-        const summary = {
-            correctUntil: equality === -1 ? toCompare.length : equality,
-            wrongUntil: equality !== -1 ? toCompare.length : 0,
-        };
-        summary.correctUntil--;
-        summary.wrongUntil--;
+        const inputValue = e.target.value;
+        const toCompare = currentWord.slice(0, inputValue.length);
 
-        if (e.target.value.length > toCompare.length) {
-            summary.wrongUntil = e.target.value.length - 1;
-        }
-        onType(summary);
-
-        if (
-            e.target.value.slice(0, e.target.value.length - 1) ===
-                currentWord &&
-            e.target.value.slice(e.target.value.length - 1) === " "
-        ) {
-            console.log("Correctly typed");
+        const inputNoLastChar = inputValue.slice(0, inputValue.length - 1);
+        const inputLastChar = inputValue.slice(inputValue.length - 1);
+        if (inputNoLastChar === currentWord && inputLastChar === " ") {
             onCorrectlyTyped();
             setTyped("");
-            onType({}); // overrides the prev one
+            onType({});
             return;
         }
-        setTyped(e.target.value);
+
+        onType(getSummary(toCompare, inputValue));
+        setTyped(inputValue);
     }
 
     return (
