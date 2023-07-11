@@ -333,6 +333,10 @@ span {
     background-color: rgba(100, 100, 100, 25%) !important;
 }
 
+.word--passed {
+    color: green;
+}
+
 .char--correct {
     color: green !important;
     animation: pulse 0.2s;
