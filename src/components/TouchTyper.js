@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ResetButton from "./ResetButton";
 import Timer from "./Timer";
-import TyperInput from "./TyperInput";
+import TyperInput, { getSummary } from "./TyperInput";
 import WordsContainer from "./WordsContainer";
 
 const words = [
@@ -39,7 +39,8 @@ function isInsideFirstLineArea(container, element) {
 
 function TouchTyper() {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    const [typingDetails, setTypingDetails] = useState({});
+    // getSummary is used to initialize an object with the same structure for the first render
+    const [typingDetails, setTypingDetails] = useState(getSummary("", ""));
     const wordsContainerRef = useRef();
     const currentWordRef = useRef();
 
@@ -47,6 +48,7 @@ function TouchTyper() {
         setCurrentWordIndex((prev) => prev + 1);
     }
 
+    // auto-scrolling behavior
     useEffect(() => {
         const { current: currentWordElement } = currentWordRef;
         const { current: wordsContainerElement } = wordsContainerRef;
@@ -65,6 +67,7 @@ function TouchTyper() {
         }
     }, [currentWordIndex]);
 
+    // TODO: abstract away some of this logic
     const wordsElements = words.map((word, wordIdx) => (
         <span
             ref={wordIdx === currentWordIndex ? currentWordRef : null}
@@ -84,6 +87,11 @@ function TouchTyper() {
                         wordIdx === currentWordIndex &&
                         characterIdx > typingDetails.correctUntil &&
                         characterIdx <= typingDetails.wrongUntil
+                            ? "char--wrong"
+                            : ""
+                    } ${
+                        wordIdx === currentWordIndex &&
+                        typingDetails.wrongUntil !== -1
                             ? "char--wrong"
                             : ""
                     }`}

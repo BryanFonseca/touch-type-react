@@ -8,11 +8,12 @@ function equalUntil(baseWord, otherWord) {
 }
 
 /**
- * 
+ * Returns a summary object that indicates up until which 
+ * index a word is correctly and incorrectly typed.
  * @param {*} typingWord 
  * @param {*} inputValue 
  */
-function getSummary(typingWord, inputValue) {
+export function getSummary(typingWord, inputValue) {
     const equality = equalUntil(typingWord, inputValue);
     const summary = {
         correctUntil: equality === -1 ? typingWord.length : equality,
@@ -39,7 +40,10 @@ function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
         if (inputNoLastChar === currentWord && inputLastChar === " ") {
             onCorrectlyTyped();
             setTyped("");
-            onType({});
+            // getSummary is used to initialize an object with the same structure
+            // to keep a consistent interface. A class would be a good fit for this 
+            // but also a bit overkill
+            onType(getSummary('', ''));
             return;
         }
 
