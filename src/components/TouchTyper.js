@@ -91,7 +91,8 @@ function TouchTyper() {
                             : ""
                     } ${
                         wordIdx === currentWordIndex &&
-                        typingDetails.wrongUntil !== -1
+                        typingDetails.wrongUntil !== -1 &&
+                        typingDetails.wrongUntil >= word.length
                             ? "char--wrong"
                             : ""
                     }`}
