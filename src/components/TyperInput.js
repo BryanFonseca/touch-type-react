@@ -28,8 +28,9 @@ export function getSummary(typingWord, inputValue) {
     return summary;
 }
 
-function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
+function TyperInput({ currentWord, onCorrectlyTyped, onType, onInitialKeystroke }) {
     const [typed, setTyped] = useState("");
+    const [isFirstKeystroke, setIsFirstKeystroke] = useState(true);
 
     function handleType(e) {
         const inputValue = e.target.value;
@@ -51,6 +52,16 @@ function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
         setTyped(inputValue);
     }
 
+    function checkInitialKeystroke(fn) {
+        return function(...args) {
+            if (isFirstKeystroke) {
+                onInitialKeystroke();
+                setIsFirstKeystroke(false);
+            }
+            fn.call(null, ...args);
+        }
+    }
+
     return (
         <input
             className="touch-typer__input"
@@ -58,7 +69,7 @@ function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
             placeholder="type"
             autoFocus
             value={typed}
-            onChange={handleType}
+            onChange={checkInitialKeystroke(handleType)}
         />
     );
 }

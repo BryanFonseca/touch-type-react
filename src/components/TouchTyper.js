@@ -41,11 +41,16 @@ function TouchTyper() {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     // getSummary is used to initialize an object with the same structure for the first render
     const [typingDetails, setTypingDetails] = useState(getSummary("", ""));
+    const [timerStarted, setTimerStarted] = useState(false);
     const wordsContainerRef = useRef();
     const currentWordRef = useRef();
 
     function handleNextWord() {
         setCurrentWordIndex((prev) => prev + 1);
+    }
+
+    function handleInitialKeystroke() {
+        setTimerStarted(true);
     }
 
     // auto-scrolling behavior
@@ -106,7 +111,7 @@ function TouchTyper() {
     return (
         <div className="touch-typer">
             <div className="touch-typer__top">
-                <Timer />
+                <Timer started={timerStarted} />
                 <WordsContainer ref={wordsContainerRef}>
                     {wordsElements}
                 </WordsContainer>
@@ -116,6 +121,7 @@ function TouchTyper() {
                     currentWord={words.at(currentWordIndex)}
                     onCorrectlyTyped={handleNextWord}
                     onType={setTypingDetails}
+                    onInitialKeystroke={handleInitialKeystroke}
                 />
                 <ResetButton />
             </div>
