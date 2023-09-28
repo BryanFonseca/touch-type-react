@@ -5,23 +5,6 @@ import TyperInput, { getSummary } from "./TyperInput";
 import WordsContainer from "./WordsContainer";
 
 const words = [
-    "hola",
-    "como",
-    "estas",
-    "estas",
-    "yo",
-    "estoy",
-    "muy",
-    "bien",
-    "de",
-    "nada",
-    "hola",
-    "como",
-    "estas",
-    "estas",
-    "yo",
-    "estoy",
-    "muy",
     "bien",
     "de",
     "nada",
@@ -76,30 +59,35 @@ function TouchTyper() {
     const wordsElements = words.map((word, wordIdx) => (
         <span
             ref={wordIdx === currentWordIndex ? currentWordRef : null}
-            className={`word ${
-                wordIdx === currentWordIndex ? "word--current" : ""
-            } ${wordIdx < currentWordIndex ? "word--passed" : ""}`}
+            className={`word 
+                ${wordIdx === currentWordIndex ? "word--current" : ""} 
+                ${wordIdx < currentWordIndex ? "word--passed" : ""}
+            `}
             key={word + wordIdx}
         >
             {[...word].map((character, characterIdx) => (
                 <span
-                    className={`char ${
-                        wordIdx === currentWordIndex &&
-                        characterIdx <= typingDetails.correctUntil
-                            ? "char--correct"
-                            : ""
-                    } ${
-                        wordIdx === currentWordIndex &&
-                        characterIdx > typingDetails.correctUntil &&
-                        characterIdx <= typingDetails.wrongUntil
-                            ? "char--wrong"
-                            : ""
-                    } ${
-                        wordIdx === currentWordIndex &&
-                        typingDetails.wrongUntil !== -1
-                            ? "char--wrong"
-                            : ""
-                    }`}
+                    className={`char 
+                        ${
+                            wordIdx === currentWordIndex &&
+                            characterIdx <= typingDetails.correctUntil
+                                ? "char--correct"
+                                : ""
+                        } 
+                        ${
+                            wordIdx === currentWordIndex &&
+                            characterIdx > typingDetails.correctUntil &&
+                            characterIdx <= typingDetails.wrongUntil
+                                ? "char--wrong"
+                                : ""
+                        } 
+                        ${
+                            wordIdx === currentWordIndex &&
+                            typingDetails.wrongUntil !== -1
+                                ? "char--wrong"
+                                : ""
+                        }
+                    `}
                     key={character + characterIdx}
                 >
                     {character}
@@ -111,7 +99,7 @@ function TouchTyper() {
     return (
         <div className="touch-typer">
             <div className="touch-typer__top">
-                <Timer started={timerStarted} />
+                <Timer started={timerStarted} initialTime={120} />
                 <WordsContainer ref={wordsContainerRef}>
                     {wordsElements}
                 </WordsContainer>
@@ -122,6 +110,8 @@ function TouchTyper() {
                     onCorrectlyTyped={handleNextWord}
                     onType={setTypingDetails}
                     onInitialKeystroke={handleInitialKeystroke}
+                    onFinish={() => console.log('Finished')}
+                    isLastWord={words.length - (currentWordIndex + 1) === 0}
                 />
                 <ResetButton />
             </div>
