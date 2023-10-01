@@ -2,8 +2,24 @@ import { useState } from "react";
 import Score from "./components/Score";
 import TouchTyper from "./components/TouchTyper";
 
+function shuffle(array) {
+    for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        const randomIndex = Math.floor(Math.random() * array.length);
+        const randomElement = array[randomIndex];
+        array[i] = randomElement;
+        array[randomIndex] = element;
+    }
+    // shallow copy is good enough for this
+    return [...array];
+}
+
+const wordsDB = ['hola', 'bien', 'mal', 'como', 'estás', 'amigo', 'hermano', 'usar'];
+
 function App() {
     const [lastHighScore, setLastHighScore] = useState(0);
+    const [words, setWords] = useState(shuffle(wordsDB));
+
     return (
         <main className="app-container">
             {/* corner-github */}
@@ -23,7 +39,11 @@ function App() {
                 </button>
             </div>
 
-            <TouchTyper onFinish={setLastHighScore} />
+            <TouchTyper
+                words={words}
+                onReset={() => setWords(shuffle(wordsDB))}
+                onFinish={setLastHighScore}
+            />
             <Score scored={lastHighScore} />
         </main>
     );

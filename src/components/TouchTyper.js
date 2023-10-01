@@ -4,8 +4,6 @@ import Timer from "./Timer";
 import TyperInput, { getSummary } from "./TyperInput";
 import WordsContainer from "./WordsContainer";
 
-const words = ["bien", "de", "nada"];
-
 function isInsideFirstLineArea(container, element) {
     const { top: elementTop } = element.getBoundingClientRect();
     const wordHeight = Number.parseFloat(
@@ -23,7 +21,7 @@ function calculateWpm(typedChars, initialSeconds) {
     return wordsPerMinute.toFixed(0);
 }
 
-function TouchTyper({ onFinish }) {
+function TouchTyper({ words, onReset, onFinish }) {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     // getSummary is used to initialize an object with the same structure for the first render
     const [typingDetails, setTypingDetails] = useState(getSummary("", ""));
@@ -46,6 +44,7 @@ function TouchTyper({ onFinish }) {
         setResetKey(Math.random().toString());
         setCurrentWordIndex(0);
         setTypingDetails(getSummary("", ""));
+        onReset();
     }
 
     const handleTimeout = useCallback(
@@ -56,7 +55,7 @@ function TouchTyper({ onFinish }) {
                 .reduce((prev, curr) => prev + curr.length + 1, 0);
             onFinish(calculateWpm(typedChars, initialTime));
         },
-        [onFinish, currentWordIndex]
+        [onFinish, currentWordIndex, words]
     );
 
     // auto-scrolling behavior
