@@ -1,7 +1,9 @@
+import { useState } from "react";
 import Score from "./components/Score";
 import TouchTyper from "./components/TouchTyper";
 
 function App() {
+    const [lastHighScore, setLastHighScore] = useState(0);
     return (
         <main className="app-container">
             {/* corner-github */}
@@ -21,8 +23,8 @@ function App() {
                 </button>
             </div>
 
-            <TouchTyper />
-            <Score scored={3} />
+            <TouchTyper onFinish={setLastHighScore} />
+            <Score scored={lastHighScore} />
         </main>
     );
 }
