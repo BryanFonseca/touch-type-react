@@ -1,6 +1,6 @@
-function ResetButton() {
+function ResetButton({onClick}) {
     return (
-        <button className="touch-typer__reset-button">
+        <button onClick={onClick} className="touch-typer__reset-button">
             <ion-icon name="refresh-outline"></ion-icon>
         </button>
     );

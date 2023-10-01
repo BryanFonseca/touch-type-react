@@ -28,6 +28,8 @@ function TouchTyper({ onFinish }) {
     // getSummary is used to initialize an object with the same structure for the first render
     const [typingDetails, setTypingDetails] = useState(getSummary("", ""));
     const [timerStarted, setTimerStarted] = useState(false);
+    // Used for resetting the timer and text input
+    const [resetKey, setResetKey] = useState(0);
     const wordsContainerRef = useRef();
     const currentWordRef = useRef();
 
@@ -37,6 +39,13 @@ function TouchTyper({ onFinish }) {
 
     function handleInitialKeystroke() {
         setTimerStarted(true);
+    }
+
+    function handleReset() {
+        setTimerStarted(false);
+        setResetKey(Math.random().toString());
+        setCurrentWordIndex(0);
+        setTypingDetails(getSummary("", ""));
     }
 
     const handleTimeout = useCallback(
@@ -114,8 +123,9 @@ function TouchTyper({ onFinish }) {
         <div className="touch-typer">
             <div className="touch-typer__top">
                 <Timer
+                    key={resetKey}
                     started={timerStarted}
-                    initialTime={60}
+                    initialTime={5}
                     onTimeout={handleTimeout}
                 />
                 <WordsContainer ref={wordsContainerRef}>
@@ -124,6 +134,7 @@ function TouchTyper({ onFinish }) {
             </div>
             <div className="touch-typer__bottom">
                 <TyperInput
+                    key={resetKey}
                     currentWord={words.at(currentWordIndex)}
                     onCorrectlyTyped={handleNextWord}
                     onType={setTypingDetails}
@@ -131,7 +142,7 @@ function TouchTyper({ onFinish }) {
                     onFinish={() => console.log("Finished")}
                     isLastWord={words.length - (currentWordIndex + 1) === 0}
                 />
-                <ResetButton />
+                <ResetButton onClick={handleReset} />
             </div>
         </div>
     );
