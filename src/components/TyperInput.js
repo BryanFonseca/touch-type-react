@@ -8,10 +8,10 @@ function equalUntil(baseWord, otherWord) {
 }
 
 /**
- * Returns a summary object that indicates up until which 
+ * Returns a summary object that indicates up until which
  * index a word is correctly and incorrectly typed.
- * @param {*} typingWord 
- * @param {*} inputValue 
+ * @param {*} typingWord
+ * @param {*} inputValue
  */
 export function getSummary(typingWord, inputValue) {
     const equality = equalUntil(typingWord, inputValue);
@@ -28,8 +28,16 @@ export function getSummary(typingWord, inputValue) {
     return summary;
 }
 
-function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
+function TyperInput({
+    currentWord,
+    onType,
+    onCorrectlyTyped,
+    onInitialKeystroke,
+    onFinish,
+    isLastWord,
+}) {
     const [typed, setTyped] = useState("");
+    const [isFirstKeystroke, setIsFirstKeystroke] = useState(true);
 
     function handleType(e) {
         const inputValue = e.target.value;
@@ -38,17 +46,28 @@ function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
         const inputNoLastChar = inputValue.slice(0, inputValue.length - 1);
         const inputLastChar = inputValue.slice(inputValue.length - 1);
         if (inputNoLastChar === currentWord && inputLastChar === " ") {
+            if (isLastWord) onFinish();
             onCorrectlyTyped();
             setTyped("");
             // getSummary is used to initialize an object with the same structure
-            // to keep a consistent interface. A class would be a good fit for this 
+            // to keep a consistent interface. A class would be a good fit for this
             // but also a bit overkill
-            onType(getSummary('', ''));
+            onType(getSummary("", ""));
             return;
         }
 
         onType(getSummary(toCompare, inputValue));
         setTyped(inputValue);
+    }
+
+    function checkInitialKeystroke(fn) {
+        return function (...args) {
+            if (isFirstKeystroke) {
+                onInitialKeystroke();
+                setIsFirstKeystroke(false);
+            }
+            fn.call(null, ...args);
+        };
     }
 
     return (
@@ -58,7 +77,7 @@ function TyperInput({ currentWord, onCorrectlyTyped, onType }) {
             placeholder="type"
             autoFocus
             value={typed}
-            onChange={handleType}
+            onChange={checkInitialKeystroke(handleType)}
         />
     );
 }
