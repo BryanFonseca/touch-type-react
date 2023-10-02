@@ -44,6 +44,7 @@ function TouchTyper({ words, onReset, onFinish }) {
         setResetKey(Math.random().toString());
         setCurrentWordIndex(0);
         setTypingDetails(getSummary("", ""));
+        scrollToTop();
         onReset();
     }
 
@@ -76,6 +77,14 @@ function TouchTyper({ words, onReset, onFinish }) {
             });
         }
     }, [currentWordIndex]);
+
+    function scrollToTop() {
+        const { current: wordsContainerElement } = wordsContainerRef;
+        wordsContainerElement.scroll({
+            top: 0,
+            behavior: "smooth",
+        });
+    }
 
     // TODO: abstract away some of this logic
     const wordsElements = words.map((word, wordIdx) => (
@@ -124,7 +133,7 @@ function TouchTyper({ words, onReset, onFinish }) {
                 <Timer
                     key={resetKey}
                     started={timerStarted}
-                    initialTime={5}
+                    initialTime={60}
                     onTimeout={handleTimeout}
                 />
                 <WordsContainer ref={wordsContainerRef}>

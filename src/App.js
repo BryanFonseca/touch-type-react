@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Score from "./components/Score";
 import TouchTyper from "./components/TouchTyper";
+import wordsDB from './words-db';
 
 function shuffle(array) {
     for (let i = 0; i < array.length; i++) {
@@ -13,17 +14,6 @@ function shuffle(array) {
     // shallow copy is good enough for this
     return [...array];
 }
-
-const wordsDB = [
-    "hola",
-    "bien",
-    "mal",
-    "como",
-    "estás",
-    "amigo",
-    "hermano",
-    "usar",
-];
 
 function App() {
     const [lastHighScore, setLastHighScore] = useState(0);

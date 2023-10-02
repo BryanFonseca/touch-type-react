@@ -273,8 +273,9 @@ span {
     background-color: #ddd;
 }
 
-.touch-typer__reset-button>ion-icon {
-    font-size: 200%;
+.touch-typer__reset-button > svg {
+    height: 24px;
+    stroke-width: 2px;
     transform: scaleX(-100%);
 }
 
