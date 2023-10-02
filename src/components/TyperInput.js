@@ -29,6 +29,7 @@ export function getSummary(typingWord, inputValue) {
 }
 
 function TyperInput({
+    disabled,
     currentWord,
     onType,
     onCorrectlyTyped,
@@ -72,6 +73,7 @@ function TyperInput({
 
     return (
         <input
+            disabled={disabled}
             className="touch-typer__input"
             type="text"
             placeholder="type"

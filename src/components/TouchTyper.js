@@ -28,6 +28,7 @@ function TouchTyper({ words, onReset, onFinish }) {
     const [timerStarted, setTimerStarted] = useState(false);
     // Used for resetting the timer and text input
     const [resetKey, setResetKey] = useState(0);
+    const [isInputEnabled, setIsInputEnabled] = useState(true);
     const wordsContainerRef = useRef();
     const currentWordRef = useRef();
 
@@ -44,12 +45,14 @@ function TouchTyper({ words, onReset, onFinish }) {
         setResetKey(Math.random().toString());
         setCurrentWordIndex(0);
         setTypingDetails(getSummary("", ""));
+        setIsInputEnabled(true);
         scrollToTop();
         onReset();
     }
 
     const handleTimeout = useCallback(
         (initialTime) => {
+            setIsInputEnabled(false);
             // curr.length + 1 bcs of the space between each word ;)
             const typedChars = words
                 .slice(0, currentWordIndex)
@@ -142,6 +145,7 @@ function TouchTyper({ words, onReset, onFinish }) {
             </div>
             <div className="touch-typer__bottom">
                 <TyperInput
+                    disabled={!isInputEnabled}
                     key={resetKey}
                     currentWord={words.at(currentWordIndex)}
                     onCorrectlyTyped={handleNextWord}
