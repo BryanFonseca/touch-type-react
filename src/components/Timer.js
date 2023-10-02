@@ -4,17 +4,27 @@ function Timer({ started, initialTime, onTimeout }) {
     const [seconds, setSeconds] = useState(initialTime);
 
     useEffect(() => {
-        console.log('effect')
         if (!started) return;
-        const timeoutId = setTimeout(() => {
-            if (seconds === 0) return;
-            if (seconds === 1) onTimeout(initialTime);
-            setSeconds(prevSeconds => prevSeconds - 1);
+
+        const intervalId = setInterval(() => {
+            setSeconds((prevSeconds) => {
+                if (prevSeconds === 1) {
+                    clearInterval(intervalId);
+                    return 0;
+                }
+                return prevSeconds - 1;
+            });
         }, 1000);
+
         return () => {
-            clearTimeout(timeoutId);
+            clearInterval(intervalId);
         };
-    }, [started, initialTime, seconds, onTimeout]);
+    }, [started, initialTime]);
+
+    useEffect(() => {
+        if (seconds !== 0) return;
+        onTimeout(initialTime);
+    }, [seconds, onTimeout, initialTime]);
 
     return (
         // Implement double binding for hot time replacement
