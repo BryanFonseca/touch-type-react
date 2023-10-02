@@ -121,11 +121,13 @@ span {
 
 .corner-left>.github-profile-button {
     font-size: 3.9rem;
-    transform: translate(17%, 17%);
+    transform: translate(45%, 15%);
     cursor: pointer;
 }
 
-.corner-left>.github-profile-button ion-icon {
+.corner-left>.github-profile-button svg {
+    height: 50px;
+    width: 50px;
     color: #fff;
 }
 

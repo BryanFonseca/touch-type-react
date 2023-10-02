@@ -4,6 +4,7 @@ function Timer({ started, initialTime, onTimeout }) {
     const [seconds, setSeconds] = useState(initialTime);
 
     useEffect(() => {
+        console.log('effect')
         if (!started) return;
         const timeoutId = setTimeout(() => {
             if (seconds === 0) return;
